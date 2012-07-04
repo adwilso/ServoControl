@@ -22,14 +22,37 @@ SOURCES += src/mainandlog/main.cpp \
     src/mainandlog/mainwindow.cpp \
     src/mainandlog/logviewer.cpp \
     src/mainandlog/logviewerdialog.cpp \
+    src/livemode/valuevalidator.cpp \
+    src/livemode/sequencescrollarea.cpp \
+    src/livemode/sequenceframe.cpp \
+    src/livemode/sequencebox.cpp \
+    src/livemode/positionframe.cpp \
+    src/livemode/nameeditarea.cpp \
+    src/livemode/main.cpp \
+    src/livemode/editarea.cpp \
+    src/livemode/clicklabel.cpp
 
 
 HEADERS += src/mainandlog/mainwindow.h \
     src/mainandlog/logviewer.h \
     src/mainandlog/logviewerdialog.h \
+    src/livemode/sequencescrollarea.h \
+    src/livemode/sequenceframe.h \
+    src/livemode/sequencebox.h \
+    src/livemode/positionframe.h \
+    src/livemode/nameeditarea.h \
+    src/livemode/editarea.h \
+    src/livemode/clicklabel.h \
+    src/livemode/valuevalidator.h
 
 
 FORMS +=  src/mainandlog/mainwindow.ui \
+    src/livemode/sequencescrollarea.ui \
+    src/livemode/sequenceframe.ui \
+    src/livemode/sequencebox.ui \
+    src/livemode/positionframe.ui \
+    src/livemode/nameeditarea.ui \
+    src/livemode/editarea.ui
 
 #Servoboard
 

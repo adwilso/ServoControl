@@ -93,6 +93,7 @@ AbstractSerial* ServoboardController::returnSerialPort()
 /*Public Slot*/
 void ServoboardController::loadFile()
 {
+    /// \todo Decide if poping up a dialog in here breaks MVC.
     QString fileName = QFileDialog::getOpenFileName(view,
                                                     tr("Open Sequence"), "./", tr("Servo Sequence Files (*.SER *.SERVO)"));
     ServoboardController::fileName = fileName;
