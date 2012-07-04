@@ -11,6 +11,7 @@
 
 #include "serialtools/connectioncontroller.h"
 #include "servoboard/servoboardcontroller.h"
+#include "livemode/sequencebox.h"
 
 QT_BEGIN_NAMESPACE
 class LogViewer;
@@ -73,6 +74,10 @@ private:
     ConnectionController* connectControl;
     ServoboardController* servoControl;
     AbstractSerial* port;
+
+    sequenceBox *liveMode;
+
+    bool destroying;
 
 
 

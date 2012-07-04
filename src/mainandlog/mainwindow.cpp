@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent, QPointer<LogViewer> log) :
     logWindow(log),
     connectControl(0),
     servoControl(0),
-    port(0)
+    port(0),
+    destroying(false)
 {
     ui->setupUi(this);
     SetupLayout();
@@ -36,10 +37,12 @@ void MainWindow::SetupLayout()
     serialconnecter = new SerialWidget(tabs);
     servotab = new servoboard_main(tabs);
     networktab = new NetworkWidget(tabs,0);
+    liveMode = new sequenceBox(tabs);
 
     tabs->addTab(serialconnecter,tr("Serial Port"));
     tabs->addTab(networktab,tr("Network"));
     tabs->addTab(servotab,tr("Servo Board"));
+    tabs->addTab(liveMode,tr("Live Mode"));
 
     layout->setSpacing(4);
     layout->setMargin(5);
@@ -68,6 +71,7 @@ void MainWindow::SetupLayout()
 
 MainWindow::~MainWindow()
 {
+    destroying = true;
     if( connectControl) this->cleanUpConnection();
     if (servoControl) this->cleanupServoBoard();
     if (port)
@@ -94,6 +98,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::tabChanged(int index)
 {
+    if (destroying) return; //Same reason as below
     if (!networktab) return; //See destructor for explaination of this line.
     switch(index)
     {
@@ -125,6 +130,16 @@ void MainWindow::tabChanged(int index)
             this->cleanUpConnection();
         }
         this->initServoBoard();
+        break;
+    case 3:
+        if (connectControl)
+        {
+            this->cleanUpConnection();
+        }
+        if(servoControl)
+        {
+            this->cleanupServoBoard();
+        }
         break;
     default:
         qDebug() << "this is silly";

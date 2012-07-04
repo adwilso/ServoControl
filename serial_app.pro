@@ -28,7 +28,6 @@ SOURCES += src/mainandlog/main.cpp \
     src/livemode/sequencebox.cpp \
     src/livemode/positionframe.cpp \
     src/livemode/nameeditarea.cpp \
-    src/livemode/main.cpp \
     src/livemode/editarea.cpp \
     src/livemode/clicklabel.cpp
 

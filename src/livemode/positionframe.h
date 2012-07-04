@@ -5,7 +5,7 @@
 #include <QFrame>
 #include "nameeditarea.h"
 #include "editarea.h"
-#include "position.h"
+#include "servoboard/position.h"
 
 namespace Ui {
 class PositionFrame;

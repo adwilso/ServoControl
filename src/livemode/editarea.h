@@ -4,7 +4,7 @@
 #include <QFrame>
 #include <QDebug>
 #include "clicklabel.h"
-#include <valuevalidator.h>
+#include "valuevalidator.h"
 
 namespace Ui {
 class EditArea;
