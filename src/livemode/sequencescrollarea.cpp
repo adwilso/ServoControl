@@ -15,12 +15,20 @@ SequenceScrollArea::~SequenceScrollArea()
 void SequenceScrollArea::contextMenuEvent(QContextMenuEvent *ev)
 {
     QMenu* menu = new QMenu(this);
-    menu->addAction("Insert Before");
-    menu->addAction("Insert After");
+    menu->addAction("Insert Before",this,SLOT(insertBefore()));
+    menu->addAction("Insert After",this,SLOT(insertAfter()));
     menu->addAction("Delete");
     menu->addAction("Cut");
     menu->addAction("Copy");
     menu->addAction("Paste Before");
     menu->addAction("Paste After");
     menu->exec(ev->globalPos());
+}
+void SequenceScrollArea::insertBefore()
+{
+    qDebug() << "insert before";
+}
+void SequenceScrollArea::insertAfter()
+{
+    qDebug() << "insert after";
 }

@@ -5,6 +5,7 @@
 #include <QMenu>
 #include <QPoint>
 #include <QContextMenuEvent>
+#include <QDebug>
 namespace Ui {
 class SequenceScrollArea;
 }
@@ -18,6 +19,10 @@ public:
     ~SequenceScrollArea();
 protected:
     void contextMenuEvent(QContextMenuEvent *);
+
+private slots:
+    void insertBefore();
+    void insertAfter();
     
 private:
     Ui::SequenceScrollArea *ui;

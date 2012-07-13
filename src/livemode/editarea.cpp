@@ -8,17 +8,14 @@ EditArea::EditArea(QWidget *parent,int index) :
 {
     ui->setupUi(this);
     label = new ClickLabel(this);
-    label->resize(21,21);
-    label->move(29,0);
+    label->resize(21,19);
+    label->move(1,1);
     label->setVisible(true);
     label->setAlignment(Qt::AlignCenter);
     ui->lineEdit->setVisible(false);
 
     ValueValidator* v = new ValueValidator(ui->lineEdit);
     ui->lineEdit->setValidator(v);
-
-    ui->displayLabel->setText(tr("SERVO %1").arg(index));
-    ui->displayLabel->setAlignment(Qt::AlignHCenter);
 
     connect(label, SIGNAL(clicked()),SLOT(labelClicked()));
     connect(ui->lineEdit,SIGNAL(editingFinished()),SLOT(editFinished()));

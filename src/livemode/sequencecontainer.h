@@ -1,30 +1,30 @@
-#ifndef SEQUENCEBOX_H
-#define SEQUENCEBOX_H
+#ifndef SEQUENCECONTAINER_H
+#define SEQUENCECONTAINER_H
 
-#include <QMainWindow>
+#include <QFrame>
+#include "sequencescrollarea.h"
 #include "editarea.h"
 #include "nameeditarea.h"
 #include "positionframe.h"
 #include "sequenceframe.h"
 #include "sequencescrollarea.h"
 #include "sequencecontainer.h"
+
 namespace Ui {
-class sequenceBox;
+class SequenceContainer;
 }
 
-class sequenceBox : public QMainWindow
+class SequenceContainer : public QFrame
 {
     Q_OBJECT
     
 public:
-    explicit sequenceBox(QWidget *parent = 0);
-    ~sequenceBox();
+    explicit SequenceContainer(QWidget *parent = 0);
+    ~SequenceContainer();
     
-private slots:
-    void on_pushButton_clicked();
-
 private:
-    Ui::sequenceBox *ui;
+    Ui::SequenceContainer *ui;
+
     EditArea* edit;
     EditArea* edit2;
     NameEditArea* edit3;
@@ -32,8 +32,8 @@ private:
     PositionFrame* frame2;
     PositionFrame* frame3;
     SequenceFrame* sequence;
-    SequenceContainer* scroll;
 
+    SequenceScrollArea* sequenceScroll;
 };
 
-#endif // SEQUENCEBOX_H
+#endif // SEQUENCECONTAINER_H

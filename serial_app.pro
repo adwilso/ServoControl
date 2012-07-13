@@ -29,7 +29,8 @@ SOURCES += src/mainandlog/main.cpp \
     src/livemode/positionframe.cpp \
     src/livemode/nameeditarea.cpp \
     src/livemode/editarea.cpp \
-    src/livemode/clicklabel.cpp
+    src/livemode/clicklabel.cpp \
+    src/livemode/sequencecontainer.cpp
 
 
 HEADERS += src/mainandlog/mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += src/mainandlog/mainwindow.h \
     src/livemode/nameeditarea.h \
     src/livemode/editarea.h \
     src/livemode/clicklabel.h \
-    src/livemode/valuevalidator.h
+    src/livemode/valuevalidator.h \
+    src/livemode/sequencecontainer.h
 
 
 FORMS +=  src/mainandlog/mainwindow.ui \
@@ -51,7 +53,8 @@ FORMS +=  src/mainandlog/mainwindow.ui \
     src/livemode/sequencebox.ui \
     src/livemode/positionframe.ui \
     src/livemode/nameeditarea.ui \
-    src/livemode/editarea.ui
+    src/livemode/editarea.ui \
+    src/livemode/sequencecontainer.ui
 
 #Servoboard
 

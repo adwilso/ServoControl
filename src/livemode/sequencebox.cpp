@@ -6,7 +6,7 @@ sequenceBox::sequenceBox(QWidget *parent) :
     ui(new Ui::sequenceBox)
 {
     ui->setupUi(this);
-    frame = new PositionFrame(this);
+   /* frame = new PositionFrame(this);
     frame->setVisible(true);
     frame->move(10,160);
     frame2 = new PositionFrame(this);
@@ -25,11 +25,11 @@ sequenceBox::sequenceBox(QWidget *parent) :
 
     PositionFrame* f = new PositionFrame(this);
     f->setVisible(true);
-    sequence->addPositionFrame(f);
+    sequence->addPositionFrame(f);*/
 
-    scroll = new SequenceScrollArea(this);
-    scroll->setWidgetResizable(false);
-    scroll->setWidget(sequence);
+    scroll = new SequenceContainer(this);
+    //scroll->setWidgetResizable(false);
+    //scroll->setWidget(sequence);
     scroll->move(50,50);
 
 }
@@ -41,8 +41,8 @@ sequenceBox::~sequenceBox()
 
 void sequenceBox::on_pushButton_clicked()
 {
-    PositionFrame* f = new PositionFrame(this);
-    f->setVisible(true);
-    sequence->addPositionFrame(f);
+    //PositionFrame* f = new PositionFrame(this);
+    //f->setVisible(true);
+   // sequence->addPositionFrame(f);
 
 }
