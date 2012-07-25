@@ -6,7 +6,6 @@
 #include "nameeditarea.h"
 #include "positionframe.h"
 #include "sequenceframe.h"
-#include "sequencescrollarea.h"
 #include "sequencecontainer.h"
 namespace Ui {
 class sequenceBox;

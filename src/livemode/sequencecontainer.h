@@ -2,13 +2,13 @@
 #define SEQUENCECONTAINER_H
 
 #include <QFrame>
-#include "sequencescrollarea.h"
 #include "editarea.h"
 #include "nameeditarea.h"
 #include "positionframe.h"
 #include "sequenceframe.h"
-#include "sequencescrollarea.h"
 #include "sequencecontainer.h"
+#include "QScrollArea"
+#include "QMenu"
 
 namespace Ui {
 class SequenceContainer;
@@ -21,6 +21,8 @@ class SequenceContainer : public QFrame
 public:
     explicit SequenceContainer(QWidget *parent = 0);
     ~SequenceContainer();
+
+
     
 private:
     Ui::SequenceContainer *ui;
@@ -33,7 +35,7 @@ private:
     PositionFrame* frame3;
     SequenceFrame* sequence;
 
-    SequenceScrollArea* sequenceScroll;
+    QScrollArea* sequenceScroll;
 };
 
 #endif // SEQUENCECONTAINER_H

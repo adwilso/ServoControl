@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QList>
 #include <QDebug>
+#include <QMenu>
 
 #include "positionframe.h"
 
@@ -21,6 +22,12 @@ public:
 
     bool addPositionFrame(PositionFrame* newFrame, int index = -1);
     
+protected:
+    void contextMenuEvent(QContextMenuEvent *);
+
+private slots:
+    void insertBefore();
+    void insertAfter();
 private:
     bool drawPositionFrames();
     Ui::SequenceFrame *ui;

@@ -31,8 +31,11 @@ SequenceContainer::SequenceContainer(QWidget *parent) :
     sequence->setParent(sequenceScroll);
 
 
-    sequenceScroll = new SequenceScrollArea(this);
+
+
+    sequenceScroll = new QScrollArea(this);
     sequenceScroll->move(0,21);
+    sequenceScroll->resize(407,150);
     sequenceScroll->setWidgetResizable(false);
     sequenceScroll->setWidget(sequence);
     sequenceScroll->setVisible(true);
@@ -43,3 +46,4 @@ SequenceContainer::~SequenceContainer()
 {
     delete ui;
 }
+

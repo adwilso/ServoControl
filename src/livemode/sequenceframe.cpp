@@ -33,6 +33,28 @@ bool SequenceFrame::addPositionFrame(PositionFrame *newFrame, int index)
     return this->drawPositionFrames();
 
 }
+
+void SequenceFrame::contextMenuEvent(QContextMenuEvent *ev)
+{
+    QMenu* menu = new QMenu(this);
+    menu->addAction("Insert Before",this,SLOT(insertBefore()));
+    menu->addAction("Insert After",this,SLOT(insertAfter()));
+    menu->addAction("Delete");
+    menu->addAction("Cut");
+    menu->addAction("Copy");
+    menu->addAction("Paste Before");
+    menu->addAction("Paste After");
+    menu->exec(ev->globalPos());
+}
+void SequenceFrame::insertBefore()
+{
+    qDebug() << "insert before";
+}
+void SequenceFrame::insertAfter()
+{
+    qDebug() << "insert after";
+}
+
 /*Private Methods*/
 bool SequenceFrame::drawPositionFrames()
 {
