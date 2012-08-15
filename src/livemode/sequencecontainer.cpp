@@ -28,7 +28,6 @@ SequenceContainer::SequenceContainer(QWidget *parent) :
     f->setVisible(true);
     sequence->addPositionFrame(f);
 
-    sequence->setParent(sequenceScroll);
 
 
 
@@ -39,6 +38,8 @@ SequenceContainer::SequenceContainer(QWidget *parent) :
     sequenceScroll->setWidgetResizable(false);
     sequenceScroll->setWidget(sequence);
     sequenceScroll->setVisible(true);
+    sequence->setParent(sequenceScroll);
+
 
 }
 
