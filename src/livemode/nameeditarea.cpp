@@ -31,6 +31,11 @@ NameEditArea::~NameEditArea()
     delete ui;
 }
 
+QString NameEditArea::getName()
+{
+    return this->label->text();
+}
+
 void NameEditArea::lostFocus()
 {
     if (this->label->isVisible())

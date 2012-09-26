@@ -4,7 +4,7 @@ ClickLabel::ClickLabel(QWidget *parent) :
     QLabel(parent)
 {
 }
-void ClickLabel::mouseReleaseEvent(QMouseEvent *ev)
+void ClickLabel::mouseDoubleClickEvent(QMouseEvent *ev)
 {
     emit this->clicked();
 }

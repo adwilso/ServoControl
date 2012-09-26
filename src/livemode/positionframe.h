@@ -19,16 +19,20 @@ public:
     explicit PositionFrame(QWidget *parent = 0);
     ~PositionFrame();
 
+    QString getName();
+
 protected:
     void mouseReleaseEvent(QMouseEvent * ev);
 
 private slots:
     void focusChanged(int newFocusIndex);
     void dataChanged(int newValue, int index);
+    void newName(QString name);
 signals:
     void newFocus(int i);
     
 private:
+    void initalizePosition();
     void selected();
     void unselected();
     Ui::PositionFrame *ui;

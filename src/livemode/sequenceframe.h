@@ -7,6 +7,7 @@
 #include <QMenu>
 
 #include "positionframe.h"
+#include <QRect>
 
 namespace Ui {
 class SequenceFrame;
@@ -30,8 +31,10 @@ private slots:
     void insertAfter();
 private:
     bool drawPositionFrames();
+    PositionFrame* getFrameUnderPosition(QPoint framePos);
     Ui::SequenceFrame *ui;
     QList <PositionFrame*>* frames;
+    QPoint lastRightClick;
 };
 
 #endif // SEQUENCEFRAME_H

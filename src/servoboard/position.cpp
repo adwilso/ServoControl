@@ -8,7 +8,8 @@ Position::Position() :
         m_hasData(false),
         m_isFreeze(false),
         m_hasDelay(false),
-        m_hasPWM(false)
+        m_hasPWM(false),
+        m_name("Position 1")
 {
     init();
 }

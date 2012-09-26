@@ -14,6 +14,7 @@ PositionFrame::PositionFrame(QWidget *parent) :
     name->setFrameShape(QFrame::Panel);
     name->setLineWidth(1);
     connect(name,SIGNAL(focusShifted(int)),SLOT(focusChanged(int)));
+    connect(name, SIGNAL(valueEntered(QString)),SLOT(newName(QString)));
     for (int i(0); i < 12; ++i)
     {
         servoEdits[i] = new EditArea(this,i +1);
@@ -25,12 +26,23 @@ PositionFrame::PositionFrame(QWidget *parent) :
         connect(servoEdits[i],SIGNAL(valueEntered(int,int)),SLOT(dataChanged(int,int)));
         connect(this,SIGNAL(newFocus(int)),servoEdits[i],SLOT(focusShifted(int)));
     }
+    this->initalizePosition();
 }
 
 PositionFrame::~PositionFrame()
 {
     delete ui;
 }
+
+QString PositionFrame::getName()
+{
+    return m_position->getName();
+}
+void PositionFrame::newName(QString name)
+{
+    m_position->setName(name);
+}
+
 void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
 {
     if (ev->button() == Qt::RightButton && active)
@@ -95,4 +107,13 @@ void PositionFrame::unselected()
     }
     name->setFrameShape(QFrame::Panel);
     name->setLineWidth(1);
+}
+void PositionFrame::initalizePosition()
+{
+    m_position = new Position();
+    for (int i(0); i < 12; ++i)
+    {
+        m_position->addServoPosition(i+1,servoEdits[i]->getValue());
+    }
+    m_position->setName(name->getName());
 }

@@ -30,6 +30,8 @@ private slots:
     //From text - along with every combination of junk.
     //from and to string are inverses
 
+    //Check that the iterator works, and that it moves/resets correctly
+
 
 
 private:

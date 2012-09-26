@@ -17,6 +17,7 @@ class EditArea : public QFrame
 public:
     explicit EditArea(QWidget *parent = 0,int index = 0);
     ~EditArea();
+    int getValue();
 
 signals:
     void valueEntered(int newValue, int index);

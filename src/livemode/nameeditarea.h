@@ -17,6 +17,7 @@ public:
     explicit NameEditArea(QWidget *parent = 0);
     ~NameEditArea();
     void lostFocus();
+    QString getName();
 
 signals:
     void valueEntered(QString newValue);

@@ -28,6 +28,11 @@ EditArea::~EditArea()
 {
     delete ui;
 }
+int EditArea::getValue()
+{
+   return this->label->text().toInt();
+}
+
 void EditArea::valueChanged(int newValue)
 {
     if (newValue < 1 || newValue > 97)
