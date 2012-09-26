@@ -29,6 +29,7 @@ protected:
 private slots:
     void insertBefore();
     void insertAfter();
+    void deleteFrame();
 private:
     bool drawPositionFrames();
     PositionFrame* getFrameUnderPosition(QPoint framePos);

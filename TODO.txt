@@ -7,6 +7,8 @@ Fix memory leak in 'SerialWidget::initOptionsWidget()' in file: 'serial_widget.c
 Add configurable limits for ServoBoard Max and Min values (ie. adjustable range) ex: 0-97
 	-Factor out constants to a single file
 
+Scroll bars don't show up fast enough on the live mode page.
+
 Make servo bundles show up on the designer page.
 
 Add a way to see current global values.
@@ -64,13 +66,13 @@ Make a real style sheet for all the pages, add images to the play button ect.
 
 Turn trace into a complete hyperterminal replacment for debugging.
 
-Make syntax highlighting look more usefull, display data better.
+Make syntax highlighting look more useful, display data better.
 
 Emergency stop for runnning a sequence
 
 Networking tab doesn't get a AbstactSerialPointer anymore, need to get it a pointer if needed.
 
-Turn comments into Deoxygen format or similar to generate documentation.
+Turn comments into Deoxygen format
 
 Somebody get units tests all up in this stuff.
 

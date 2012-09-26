@@ -3,15 +3,22 @@
 
 SequenceFrame::SequenceFrame(QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::SequenceFrame)
+    ui(new Ui::SequenceFrame),
+    isCopyOnClipboard(false)
 {
     ui->setupUi(this);
     frames = new QList<PositionFrame*>();
+    clipboard = new QList<PositionFrame*>();
 }
 
 SequenceFrame::~SequenceFrame()
 {
     delete ui;
+    while (!frames->isEmpty())
+    {
+        PositionFrame* f = frames->takeFirst();
+        delete f;
+    }
 }
 /*Public Methods*/
 bool SequenceFrame::addPositionFrame(PositionFrame *newFrame, int index)
@@ -33,36 +40,120 @@ bool SequenceFrame::addPositionFrame(PositionFrame *newFrame, int index)
     return this->drawPositionFrames();
 
 }
-
+/*Protected Methods*/
 void SequenceFrame::contextMenuEvent(QContextMenuEvent *ev)
 {
     QMenu* menu = new QMenu(this);
     menu->addAction("Insert Before",this,SLOT(insertBefore()));
     menu->addAction("Insert After",this,SLOT(insertAfter()));
-    menu->addAction("Delete");
-    menu->addAction("Cut");
-    menu->addAction("Copy");
-    menu->addAction("Paste Before");
-    menu->addAction("Paste After");
+    menu->addAction("Delete",this,SLOT(deleteFrame()));
+    menu->addAction("Cut",this,SLOT(cutFrame()));
+    menu->addAction("Copy",this,SLOT(copyFrame()));
+    if (!clipboard->isEmpty())
+    {
+        menu->addAction("Paste Before");
+        menu->addAction("Paste After");
+    }
     lastRightClick.rx() = ev->pos().x();
     lastRightClick.ry() = ev->pos().y();
     menu->exec(ev->globalPos());
 }
+/*Private Slots*/
 void SequenceFrame::insertBefore()
 {
-    qDebug() << "insert before";
     PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
-    if (f != 0){
-    qDebug() << "Frame name: " << f->getName();
+    if (f != 0)
+    {
+        int index = this->frames->indexOf(f);
+        this->frames->insert(index, new PositionFrame(this));
+        this->drawPositionFrames();
     }
     else
     {
-        qDebug() << "There was no frame returned";
+        qDebug() << "Insert before failed as there was no position to insert before. In: "
+                 << __LINE__ << " void sequenceFrame:insertBefore()";
     }
 }
 void SequenceFrame::insertAfter()
 {
-    qDebug() << "insert after";
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+        int index = this->frames->indexOf(f);
+        this->frames->insert(index + 1, new PositionFrame(this));
+        this->drawPositionFrames();
+    }
+    else
+    {
+        this->frames->insert(0, new PositionFrame(this));
+        this->drawPositionFrames();
+    }
+}
+void SequenceFrame::deleteFrame()
+{
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+        int index = this->frames->indexOf(f);
+        f = this->frames->takeAt(index);
+        delete f;
+        this->drawPositionFrames();
+
+    }
+    else
+    {
+        qDebug() << "Could not delete frame as one was not clicked in: " << __LINE__
+                 << " void SequenceFrame::deleteFrame()";
+    }
+}
+void SequenceFrame::cutFrame()
+{
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+        int index = this->frames->indexOf(f);
+        f = this->frames->takeAt(index);
+        this->clearClipboard();
+        this->clipboard->append(f);
+        delete f;
+        this->isCopyOnClipboard = false;
+        this->drawPositionFrames();
+    }
+    else
+    {
+        qDebug() << "Could not cut frame as there was not one clicked on in: " << __LINE__
+                 << " void SequenceFrame::cutFrame()";
+    }
+}
+void SequenceFrame::copyFrame()
+{
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+        this->clearClipboard();
+        this->clipboard->append(f);
+        delete f;
+        this->isCopyOnClipboard = true;
+        this->drawPositionFrames();
+    }
+    else
+    {
+        qDebug() << "Could not cut frame as there was not one clicked on in: " << __LINE__
+                 << " void SequenceFrame::copyFrame()";
+    }
+}
+void SequenceFrame::pasteFrameBefore()
+{
+    PositionFrame* f - this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+
+    }
+    else
+    {
+        qDebug() << "Could not paste before frame as there was not one clicked on in: " << __LINE__
+                 << " void SequenceFrame::pasteBeforeFrame()";
+    }
 }
 
 /*Private Methods*/
@@ -91,11 +182,10 @@ PositionFrame* SequenceFrame::getFrameUnderPosition(QPoint framePos)
     qDebug() << "Point x: " << framePos.x() << " y: " << framePos.y();
     for (int i(0); i < frames->size(); ++i ) /// TODO: Quadratic, needs to be fixed.
     {
-
-       /* qDebug() << i << ": x: " <<frames->at(i)->frameRect().x() << " y: " << frames->at(i)->frameRect().y() <<
-        "width: " << frames->at(i)->frameRect().width() << " height: " << frames->at(i)->frameRect().height();
-        */QRect r(frames->at(i)->pos().x(),frames->at(i)->pos().y(),
+        QRect r(frames->at(i)->pos().x(),frames->at(i)->pos().y(),
                 frames->at(i)->width(),frames->at(i)->height());
+        //We have to use pos, thus can't compare to the bounding rect, the bounding rect is not in the same
+        //cordinate system as the click is returned in.
         if (r.contains(framePos))
         {
             return (*frames)[i];
@@ -104,4 +194,20 @@ PositionFrame* SequenceFrame::getFrameUnderPosition(QPoint framePos)
     qDebug() << "Click event was outside of the current frames. On: " << __LINE__ <<
                 ", SequenceFrame::getFrameUnderPosition(QPoint& framePosition)";
     return 0;
+}
+void SequenceFrame::clearClipboard()
+{
+    if (isCopyOnClipboard)
+    {//Don't free the shared memory that is the frames list's problem now.
+        clipboard->clear();
+        return;
+    }
+    else //This is our mess to free.
+    {
+        while(!this->clipboard->isEmpty())
+        {
+            PositionFrame *f  = clipboard->takeFirst();
+            delete f;
+        }
+    }
 }
