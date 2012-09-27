@@ -59,6 +59,8 @@ Make a "live mode" where dragging the sliders/spin boxes makes an instant change
 	-can take 'snapshots' of a position and save it.
 	-used to quickly build up a sequence.
 
+Live Mode fits itself to the sequence modes (12 4 5)
+
 Add an automatic updater to grab updates from a server.
 
 Make a real style sheet for all the pages, add images to the play button ect. 

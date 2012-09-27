@@ -30,12 +30,19 @@ private slots:
     void insertBefore();
     void insertAfter();
     void deleteFrame();
+    void cutFrame();
+    void copyFrame();
+    void pasteFrameBefore();
 private:
     bool drawPositionFrames();
     PositionFrame* getFrameUnderPosition(QPoint framePos);
+    void clearClipboard();
+
     Ui::SequenceFrame *ui;
     QList <PositionFrame*>* frames;
     QPoint lastRightClick;
+    QList <PositionFrame*>* clipboard;
+    bool isCopyOnClipboard;
 };
 
 #endif // SEQUENCEFRAME_H

@@ -144,7 +144,7 @@ void SequenceFrame::copyFrame()
 }
 void SequenceFrame::pasteFrameBefore()
 {
-    PositionFrame* f - this->getFrameUnderPosition(lastRightClick);
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
     if (f != 0)
     {
 
