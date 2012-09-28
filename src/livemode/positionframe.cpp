@@ -38,10 +38,63 @@ QString PositionFrame::getName()
 {
     return m_position->getName();
 }
+bool PositionFrame::setName(QString name)
+{
+    if (name.length() > 20 || name.isEmpty()) //20 character limit on the position names
+    {
+        qDebug() << "Name passed is not valid on: " << __LINE__
+                 << " in bool PositionFrame::setName(QString name)";
+        return false;
+    }
+    this->m_position->setName(name);
+    this->name->setName(name);
+    return true;
+
+}
+quint8 PositionFrame::getServoData(int servoNumber)
+{
+    if (servoNumber > 12 || servoNumber < 0)
+    {
+        return 0;
+    }
+    return m_position->getPositionDataFor(servoNumber);
+}
+bool PositionFrame::setServoData(int servoNumber, int data)
+{
+    if (servoNumber  > 12 || servoNumber < 1)
+    {
+        qDebug() << "Servo value passed out of range on: " << __LINE__
+                 << " in bool PositionFrame::setServoData(int servoNumber, int data)";
+        return false;
+    }
+    if (data < 0 || data > 97)
+    {
+        qDebug()<< "Servo data passed out of range on: " << __LINE__
+                << " in bool PositionFrame::setServoData(int servoNumber, int data)";
+        return false;
+    }
+    this->servoEdits[servoNumber-1]->valueChanged(data);
+    this->m_position->addServoPosition((quint8)servoNumber, (quint8)data);
+    return true;
+}
+
+PositionFrame* PositionFrame::copy(QWidget *parent)
+{
+    PositionFrame* output = new PositionFrame(parent);
+    for (int i(1); i < 12; ++i)
+    {
+        output->setServoData(i,this->getServoData(i));
+    }
+    output->setName(this->getName());
+    return output;
+}
+
+/*Private slots*/
 void PositionFrame::newName(QString name)
 {
     m_position->setName(name);
 }
+
 
 void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
 {

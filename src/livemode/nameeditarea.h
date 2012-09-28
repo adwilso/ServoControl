@@ -18,6 +18,7 @@ public:
     ~NameEditArea();
     void lostFocus();
     QString getName();
+    bool setName(QString name);
 
 signals:
     void valueEntered(QString newValue);

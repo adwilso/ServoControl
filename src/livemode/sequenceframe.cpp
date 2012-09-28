@@ -51,8 +51,8 @@ void SequenceFrame::contextMenuEvent(QContextMenuEvent *ev)
     menu->addAction("Copy",this,SLOT(copyFrame()));
     if (!clipboard->isEmpty())
     {
-        menu->addAction("Paste Before");
-        menu->addAction("Paste After");
+        menu->addAction("Paste Before",this,SLOT(pasteFrameBefore()));
+        menu->addAction("Paste After",this,SLOT(pasteFrameAfter()));
     }
     lastRightClick.rx() = ev->pos().x();
     lastRightClick.ry() = ev->pos().y();
@@ -70,8 +70,8 @@ void SequenceFrame::insertBefore()
     }
     else
     {
-        qDebug() << "Insert before failed as there was no position to insert before. In: "
-                 << __LINE__ << " void sequenceFrame:insertBefore()";
+        this->frames->insert(0, new PositionFrame(this));
+        this->drawPositionFrames();
     }
 }
 void SequenceFrame::insertAfter()
@@ -85,7 +85,7 @@ void SequenceFrame::insertAfter()
     }
     else
     {
-        this->frames->insert(0, new PositionFrame(this));
+        this->frames->insert(frames->length(), new PositionFrame(this));
         this->drawPositionFrames();
     }
 }
@@ -115,7 +115,7 @@ void SequenceFrame::cutFrame()
         f = this->frames->takeAt(index);
         this->clearClipboard();
         this->clipboard->append(f);
-        delete f;
+        f->setVisible(false);
         this->isCopyOnClipboard = false;
         this->drawPositionFrames();
     }
@@ -132,7 +132,6 @@ void SequenceFrame::copyFrame()
     {
         this->clearClipboard();
         this->clipboard->append(f);
-        delete f;
         this->isCopyOnClipboard = true;
         this->drawPositionFrames();
     }
@@ -147,12 +146,29 @@ void SequenceFrame::pasteFrameBefore()
     PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
     if (f != 0)
     {
-
+        int index = this->frames->indexOf(f);
+        this->frames->insert(index, clipboard->first()->copy(this));
+        this->drawPositionFrames();
     }
     else
     {
-        qDebug() << "Could not paste before frame as there was not one clicked on in: " << __LINE__
-                 << " void SequenceFrame::pasteBeforeFrame()";
+        this->frames->insert(0, clipboard->first()->copy(this));
+        this->drawPositionFrames();
+    }
+}
+void SequenceFrame::pasteFrameAfter()
+{
+    PositionFrame* f = this->getFrameUnderPosition(lastRightClick);
+    if (f != 0)
+    {
+        int index = this->frames->indexOf(f);
+        this->frames->insert(index + 1, clipboard->first()->copy(this));
+        this->drawPositionFrames();
+    }
+    else
+    {
+        this->frames->insert(frames->length(), clipboard->first()->copy(this));
+        this->drawPositionFrames();
     }
 }
 

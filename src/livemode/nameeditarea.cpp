@@ -1,7 +1,7 @@
 #include "nameeditarea.h"
 #include "ui_nameeditarea.h"
 
-
+#include <QDebug>
 NameEditArea::NameEditArea(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::NameEditArea)
@@ -43,6 +43,18 @@ void NameEditArea::lostFocus()
         return;
     }
     this->editFinished();
+}
+bool NameEditArea::setName(QString name)
+{
+    if (name.length() > 20 || name.length() < 0)
+    {
+        qDebug() << "Name was not in the correct format on: " << __LINE__ <<
+                    " in bool NameEditArea::setName(QString name)";
+        return true;
+    }
+    this->label->setText(name);
+    this->ui->lineEdit->setText(name);
+    return true;
 }
 
 void NameEditArea::labelClicked()

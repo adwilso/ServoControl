@@ -20,6 +20,12 @@ public:
     ~PositionFrame();
 
     QString getName();
+    bool setName(QString name);
+
+    quint8 getServoData(int servoNumber);
+    bool setServoData(int servoNumber, int data);
+
+    PositionFrame* copy(QWidget *parent = 0);
 
 protected:
     void mouseReleaseEvent(QMouseEvent * ev);

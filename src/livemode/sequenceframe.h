@@ -33,6 +33,7 @@ private slots:
     void cutFrame();
     void copyFrame();
     void pasteFrameBefore();
+    void pasteFrameAfter();
 private:
     bool drawPositionFrames();
     PositionFrame* getFrameUnderPosition(QPoint framePos);
