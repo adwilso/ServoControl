@@ -26,6 +26,12 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *);
 
+    //void dragEnterEvent(QDragEnterEvent *event);
+   // void dragMoveEvent(QDragMoveEvent *event);
+    void mouseMoveEvent(QMouseEvent *);
+   // void dropEvent(QDropEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
 private slots:
     void insertBefore();
     void insertAfter();
@@ -42,6 +48,7 @@ private:
     Ui::SequenceFrame *ui;
     QList <PositionFrame*>* frames;
     QPoint lastRightClick;
+    QPoint dragStart;
     QList <PositionFrame*>* clipboard;
     bool isCopyOnClipboard;
 };

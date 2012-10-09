@@ -58,6 +58,38 @@ void SequenceFrame::contextMenuEvent(QContextMenuEvent *ev)
     lastRightClick.ry() = ev->pos().y();
     menu->exec(ev->globalPos());
 }
+void SequenceFrame::mousePressEvent(QMouseEvent *event)
+{
+    if (!event->buttons() & Qt::LeftButton)
+    {
+        return;
+    }
+    PositionFrame* frame = this->getFrameUnderPosition(event->pos());
+    if (frame == 0)
+    {
+        dragStart = QPoint();
+        return;
+    }
+    dragStart = QPoint(event->pos());
+}
+void SequenceFrame::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!event->buttons() & Qt::LeftButton || dragStart.isNull())
+    {
+        return;
+    }
+    if ((event->pos() - dragStart).manhattanLength() < QApplication::startDragDistance()
+            || lastRightClick == dragStart)
+    {
+        return;
+    }
+    lastRightClick = dragStart;
+    this->cutFrame();
+
+
+
+}
+
 /*Private Slots*/
 void SequenceFrame::insertBefore()
 {
