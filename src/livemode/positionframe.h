@@ -27,6 +27,8 @@ public:
 
     PositionFrame* copy(QWidget *parent = 0);
 
+    void unselected();
+
 protected:
     void mouseReleaseEvent(QMouseEvent * ev);
 
@@ -36,11 +38,11 @@ private slots:
     void newName(QString name);
 signals:
     void newFocus(int i);
+    void selected(PositionFrame* selectedFrame);
     
 private:
     void initalizePosition();
     void selected();
-    void unselected();
     Ui::PositionFrame *ui;
     EditArea* servoEdits[12];
     NameEditArea* name;

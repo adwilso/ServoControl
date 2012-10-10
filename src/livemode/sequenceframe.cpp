@@ -38,6 +38,7 @@ bool SequenceFrame::addPositionFrame(PositionFrame *newFrame, int index)
     {
         frames->append(newFrame);
     }
+    connect(newFrame,SIGNAL(selected(PositionFrame*)),SLOT(newPositionSelected(PositionFrame*)));
     return this->drawPositionFrames();
 
 }
@@ -256,6 +257,17 @@ void SequenceFrame::pasteFrameAfter()
     {
         this->frames->insert(frames->length(), clipboard->first()->copy(this));
         this->drawPositionFrames();
+    }
+}
+void SequenceFrame::newPositionSelected(PositionFrame *selected)
+{
+    for (int i(0); i < frames->length(); ++i)
+    {
+        if (frames->at(i) == selected)
+        {
+            continue;
+        }
+        frames->at(i)->unselected();
     }
 }
 

@@ -98,6 +98,7 @@ void PositionFrame::newName(QString name)
 
 void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
 {
+    qDebug() << "Click event registered";
     if (ev->button() == Qt::RightButton && active)
     {
         return;
@@ -105,10 +106,12 @@ void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
     active  = !active;
     if (active)
     {
+        qDebug() << "selected";
         this->selected();
     }
     else
     {
+        qDebug() << "unselected";
        this->unselected();
     }
     this->focusChanged(13); //Nothing gets the focus anymore
@@ -149,10 +152,12 @@ void PositionFrame::selected()
     name->setFrameStyle(QFrame::Raised | QFrame::Box);
     name->setLineWidth(1);
     name->setMidLineWidth(0);
+    emit selected(this);
 }
 
 void PositionFrame::unselected()
 {
+    this->active = false;
     for (int i(0); i < 12; ++i)
     {
         servoEdits[i]->setFrameShape(QFrame::Panel);
