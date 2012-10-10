@@ -9,6 +9,7 @@ SequenceFrame::SequenceFrame(QWidget *parent) :
     ui->setupUi(this);
     frames = new QList<PositionFrame*>();
     clipboard = new QList<PositionFrame*>();
+    this->setAcceptDrops(true);
 }
 
 SequenceFrame::~SequenceFrame()
@@ -83,12 +84,66 @@ void SequenceFrame::mouseMoveEvent(QMouseEvent *event)
     {
         return;
     }
+
     lastRightClick = dragStart;
     this->cutFrame();
 
-
-
+    QMimeData* data = new QMimeData();
+    QByteArray bytes("garbage");
+    data->setData("application/x-position",bytes);
+    QDrag *drag  = new QDrag(this);
+    drag->setMimeData(data);
+    if (drag->exec(Qt::MoveAction) != Qt::MoveAction)
+    {
+        this->clearClipboard();
+    }
 }
+void SequenceFrame::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-position"))
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+void SequenceFrame::dragMoveEvent(QDragMoveEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-position"))
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+void SequenceFrame::dropEvent(QDropEvent *event)
+{
+    if (!event->mimeData()->hasFormat("application/x-position"))
+    {
+        qDebug() << "Drop event ignored" << event->mimeData()->formats();
+        event->ignore();
+        return;
+    }
+    lastRightClick = event->pos();
+    PositionFrame* droppedOnFrame = this->getFrameUnderPosition(event->pos());
+    QPoint pointInFrame = droppedOnFrame->pos() = event->pos();
+    if (pointInFrame.y() > (droppedOnFrame->height() / 2))
+    {
+        qDebug() << "Paste after";
+        this->pasteFrameAfter();
+    }
+    else
+    {
+        qDebug() << "Paste before";
+        this->pasteFrameBefore();
+    }
+    event->accept();
+}
+
 
 /*Private Slots*/
 void SequenceFrame::insertBefore()

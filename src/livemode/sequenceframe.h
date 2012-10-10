@@ -26,10 +26,10 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *);
 
-    //void dragEnterEvent(QDragEnterEvent *event);
-   // void dragMoveEvent(QDragMoveEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
     void mouseMoveEvent(QMouseEvent *);
-   // void dropEvent(QDropEvent *event);
+    void dropEvent(QDropEvent *event);
     void mousePressEvent(QMouseEvent *event);
 
 private slots:
