@@ -98,7 +98,6 @@ void PositionFrame::newName(QString name)
 
 void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
 {
-    qDebug() << "Click event registered";
     if (ev->button() == Qt::RightButton && active)
     {
         return;
@@ -106,12 +105,10 @@ void PositionFrame::mouseReleaseEvent(QMouseEvent *ev)
     active  = !active;
     if (active)
     {
-        qDebug() << "selected";
         this->selected();
     }
     else
     {
-        qDebug() << "unselected";
        this->unselected();
     }
     this->focusChanged(13); //Nothing gets the focus anymore

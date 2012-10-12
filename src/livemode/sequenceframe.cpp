@@ -42,6 +42,14 @@ bool SequenceFrame::addPositionFrame(PositionFrame *newFrame, int index)
     return this->drawPositionFrames();
 
 }
+QSize SequenceFrame::sizeHint() const
+{
+    QSize retval;
+    retval.setHeight(frames->length() * frames->at(0)->height() + 200);
+    retval.setWidth(this->width());
+    return retval;
+}
+
 /*Protected Methods*/
 void SequenceFrame::contextMenuEvent(QContextMenuEvent *ev)
 {

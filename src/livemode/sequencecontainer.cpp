@@ -34,10 +34,12 @@ SequenceContainer::SequenceContainer(QWidget *parent) :
 
     sequenceScroll = new QScrollArea(this);
     sequenceScroll->move(0,21);
-    sequenceScroll->resize(407,150);
+    sequenceScroll->resize(407,this->height()-21);
     sequenceScroll->setWidgetResizable(false);
     sequenceScroll->setWidget(sequence);
     sequenceScroll->setVisible(true);
+    sequenceScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    sequenceScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     sequence->setParent(sequenceScroll);
 
 

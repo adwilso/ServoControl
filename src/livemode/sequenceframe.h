@@ -9,6 +9,7 @@
 #include "positionframe.h"
 #include <QRect>
 
+
 namespace Ui {
 class SequenceFrame;
 }
@@ -22,6 +23,7 @@ public:
     ~SequenceFrame();
 
     bool addPositionFrame(PositionFrame* newFrame, int index = -1);
+    QSize sizeHint() const;
     
 protected:
     void contextMenuEvent(QContextMenuEvent *);
