@@ -236,6 +236,13 @@
        </property>
       </widget>
      </item>
+     <item row="4" column="4">
+      <widget class="QPushButton" name="btnHotModeStartStop">
+       <property name="text">
+        <string>We're Hot</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

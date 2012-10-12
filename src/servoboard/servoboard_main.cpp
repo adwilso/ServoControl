@@ -388,6 +388,12 @@ void servoboard_main::servoPositionChanged(Position *newPosition)
         }
     }
 }
+Position* servoboard_main::getHotModePosition()
+{
+    this->on_btnSelectAll_clicked();
+    Position* p = this->makePositionFromSelected();
+    return p;
+}
 
 /*Private Slots*/
 void servoboard_main::on_btnAdvancedLineOptions_clicked()
@@ -483,4 +489,21 @@ void servoboard_main::on_btnSetStartPosition_clicked()
     this->on_btnSelectAll_clicked();
     Position* p = this->makePositionFromSelected();
     emit this->setStartPosition(p);
+}
+
+void servoboard_main::on_btnHotModeStartStop_clicked()
+{
+
+    this->on_btnSelectAll_clicked();
+    Position* p = this->makePositionFromSelected();
+    emit this->hotModeToggle(p);
+    if (this->ui->btnHotModeStartStop->text().endsWith("Stop, too hot"))
+    {
+        this->ui->btnHotModeStartStop->setText("Let's run it hot");
+    }
+    else
+    {
+        this->ui->btnHotModeStartStop->setText("Stop, too hot");
+    }
+
 }

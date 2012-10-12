@@ -12,7 +12,8 @@ ServoboardController::ServoboardController(QObject *parent) :
     globalReplay(0),
     currentReplays(0),
     suppressChangeNotification(false),
-    playState(stop)
+    playState(stop),
+    isHotMode(false)
 {
     this->init();
 }
@@ -28,7 +29,8 @@ ServoboardController::ServoboardController(AbstractSerial *port,
     globalReplay(0),
     currentReplays(0),
     suppressChangeNotification(false),
-    playState(stop)
+    playState(stop),
+    isHotMode(false)
 {
     this->init();
 }
@@ -376,6 +378,26 @@ void ServoboardController::burnStartPosition()
     return;
 
 }
+void ServoboardController::hotModeToggle(Position *p)
+{
+    this->isHotMode = !this->isHotMode;
+    if (isHotMode)
+    {
+        port->write(p->toServoSerialData());
+        delete p;
+        QTimer::singleShot(10,this,SLOT(hotModeUpdate()));
+    }
+}
+void ServoboardController::hotModeUpdate()
+{
+    if (isHotMode)
+    {
+        Position *p = view->getHotModePosition();
+        port->write(p->toServoSerialData());
+        delete p;
+        QTimer::singleShot(10,this,SLOT(hotModeUpdate()));
+    }
+}
 
 /*Private Methods*/
 
@@ -397,7 +419,7 @@ void ServoboardController::resetAfterPlayback()
 bool ServoboardController::checkForChangesToTextSequence()
 {
     if (!view->hasSequenceChanged()||
-        (!view->hasSequenceInText() && displayedData->isEmpty()))//see if there are changes
+            (!view->hasSequenceInText() && displayedData->isEmpty()))//see if there are changes
     {
         return true;
     }
