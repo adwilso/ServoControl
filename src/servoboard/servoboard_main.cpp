@@ -467,7 +467,10 @@ void servoboard_main::resetHighlighting()
     delete this->highlighter;
     this->highlighter = new SequenceCompleteSyntaxHighlighter(ui->txtSequence->document());
 }
-
+/*!
+ * \brief Sets the interface to the correct state for sequence playback to be
+ *      playing by enabling and disabling the relevant buttons.
+ */
 void servoboard_main::setPlayingState()
 {
     //Make buttons avaible reflect that the sequence is playing.
@@ -475,6 +478,10 @@ void servoboard_main::setPlayingState()
     this->ui->btnPause->setEnabled(true);
     this->ui->btnPlaySequence->setEnabled(false);
 }
+/*!
+ * \brief Sets the interface to the correct state for sequence playback to be
+ *      paused by enabling and disabling the relevant buttons.
+ */
 void servoboard_main::setPausedState()
 {
     //Get buttons showing for the sequence being paused.
@@ -483,6 +490,10 @@ void servoboard_main::setPausedState()
     this->ui->btnPlaySequence->setEnabled(true);
 
 }
+/*!
+ * \brief Sets the interface to the correct state for sequence playback to be
+ *      stopped by enabling and disabling the relevant buttons.
+ */
 void servoboard_main::setStoppedState()
 {
     //Set up for the sequece being not playing.
@@ -493,6 +504,17 @@ void servoboard_main::setStoppedState()
 }
 /*Public Methods*/
 
+/*!
+ * \brief This is used to update the servo bundles with their current position.
+ *
+ * Since there is no feedback mechanism built into the board, the only way that
+ * the program can know what the current positions of the servos are is when it
+ * sends a command. This is used to inform the user what the last command sent
+ * was
+ *
+ * \param newPosition
+ *      The position that was last sent to the servo control board.
+ */
 void servoboard_main::servoPositionChanged(Position *newPosition)
 {
     if (!newPosition)
@@ -507,6 +529,11 @@ void servoboard_main::servoPositionChanged(Position *newPosition)
         }
     }
 }
+/*!
+ * \brief Returns the current position in all of the servo bundles.
+ *
+ * \return The position in the servo bundles
+ */
 Position* servoboard_main::getHotModePosition()
 {
     this->on_btnSelectAll_clicked();
@@ -515,6 +542,11 @@ Position* servoboard_main::getHotModePosition()
 }
 
 /*Private Slots*/
+
+/*!
+ * \brief Opens advanced line options dialog along side the current window.
+ *
+ */
 void servoboard_main::on_btnAdvancedLineOptions_clicked()
 {
     if (!lineOptions)
@@ -526,7 +558,29 @@ void servoboard_main::on_btnAdvancedLineOptions_clicked()
     lineOptions->open();//Asynchronous call, allow for them to change servo positions while
     //using the dialog.
 }
-
+/*!
+ * \brief Gets the data from the line options dialog when it is closed with
+ *      line options.
+ *
+ * This method captures the information from the advanced line options dialog
+ * and stores the choices for future use.
+ *
+ * \param accepted
+ *      States if the choices from the dialog box are to be used or not.
+ *
+ * \param freeze
+ *      If the user wishes to have a freeze/unfreeze command sent for the line.
+ *
+ * \param PWMSweep
+ *      The user selected PWM Sweep value
+ *
+ * \param PWMDelay
+ *      The user selected PWM delay value
+ *
+ * \param sequenceDelay
+ *      The user selected delay value.
+ *
+ */
 void servoboard_main::lineOptionsClosed(bool accepted, bool freeze,int PWMSweep, int PWMDelay, int sequenceDelay)
 {
     lineOptions->close();
@@ -538,12 +592,26 @@ void servoboard_main::lineOptionsClosed(bool accepted, bool freeze,int PWMSweep,
     this->PWMRepeatIndex = PWMDelay;
     this->sequenceDelay = sequenceDelay;
 }
-
+/*!
+ * \brief When the user clicks store gather the position in the text boxes and
+ *      alert whoever is interested (listening to the newPostionToSequence
+ *      signal
+ */
 void servoboard_main::on_btnStore_clicked()
 {
     Position* p = this->makePositionFromSelected();
     emit newPositionToSequence(p);
 }
+/*!
+ * \brief Collects the values from selected servo bundles and makes a position
+ *      out of the values
+ *
+ * There are number of places where the information from the servo bundles is
+ * needed. This method gathers the information from the bundles and stores it
+ * in a position.
+ *
+ * \return A position made from the information in the selected servo bundles
+ */
 Position* servoboard_main::makePositionFromSelected()
 {
     Position* retval = new Position();
@@ -565,51 +633,85 @@ Position* servoboard_main::makePositionFromSelected()
     }
     return retval;
 }
+/*!
+ * \brief Records that the user has made a change the to sequence text.
+ */
 void servoboard_main::on_txtSequence_textChanged()
 {
     this->hasTextChanged = true;
 }
-
+/*!
+ * \brief Informs interested parties that the user wished to play a sequence
+ *      by using the playSequence signal.
+ */
 void servoboard_main::on_btnPlaySequence_clicked()
 {
     this->setPlayingState();
     emit this->playSequence();
 }
-
+/*!
+ * \brief Called when a servo bundle has the play button clicked, informs
+ *      interested parties that the user wishes to have a new position
+ *      sent.
+ *
+ * The method communicates that there should be a new position sent by using
+ * the playPosition signal.
+ *
+ * \param servoNumber
+ *      The index of the servo that the user wishes to send data to.
+ *
+ * \param servoValue
+ *      The value that the user wishes to send to the servo.
+ */
 void servoboard_main::servoPlayButtonClicked(quint8 servoNumber, quint8 servoValue)
 {
     Position *p = new Position();
     p->addServoPosition(servoNumber,servoValue);
     emit this->playPosition(p);
 }
-
+/*!
+ * \brief Called when the Play Selected button is pressed, it gathers
+ *      the position made from the selected bundles and emits the
+ *      playPosition signal to any interested parties.
+ */
 void servoboard_main::on_btnPlaySelected_clicked()
 {
     Position *p = this->makePositionFromSelected();
     emit this->playPosition(p);
 
 }
-
+/*!
+ * \brief Informs interested parties that the user wished to pause playback if
+ *      a sequence by using the pauseSequence signal.
+ */
 void servoboard_main::on_btnPause_clicked()
 {
     this->setPausedState();
     emit this->pauseSequence();
 
 }
-
+/*!
+ * \brief Informs interested parties that the user wished to stop plaback of
+ *      a sequence by using the stopSequence signal.
+ */
 void servoboard_main::on_btnStopSequence_clicked()
 {
     this->setStoppedState();
     emit this->stopSequence();
 }
-
+/*!
+ * \brief Selects all of the servo bundles, makes a position from them and
+ *      emits the setStartPosition signal to any interested parties.
+ */
 void servoboard_main::on_btnSetStartPosition_clicked()
 {
     this->on_btnSelectAll_clicked();
     Position* p = this->makePositionFromSelected();
     emit this->setStartPosition(p);
 }
-
+/*!
+ * \brief This is an experiemental feature, do not trust.
+ */
 void servoboard_main::on_btnHotModeStartStop_clicked()
 {
 
