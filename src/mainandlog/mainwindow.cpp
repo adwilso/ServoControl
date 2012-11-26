@@ -2,9 +2,7 @@
 #include "logviewer.h"
 #include "ui_mainwindow.h"
 
-#include "serialtools/serial_widget.h"
-#include "network/network_widget.h"
-#include "servoboard/servoboard_main.h"
+
 
 #include <QLabel>
 #include <QFont>

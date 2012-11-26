@@ -10,8 +10,13 @@
 
 
 #include "serialtools/connectioncontroller.h"
+#include "serialtools/serial_widget.h"
+
+#include "servoboard/servoboard_main.h"
 #include "servoboard/servoboardcontroller.h"
+
 #include "livemode/sequencebox.h"
+#include "network/network_widget.h"
 
 QT_BEGIN_NAMESPACE
 class LogViewer;
