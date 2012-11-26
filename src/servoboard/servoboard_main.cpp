@@ -72,6 +72,8 @@ void servoboard_main::disableButtons()
     this->ui->chkUseAdvanced->setEnabled(false);
     this->ui->btnPause->setEnabled(false);
     this->ui->btnStopSequence->setEnabled(false);
+    this->ui->btnHotModeStartStop->setEnabled(false);
+    this->ui->btnSetStartPosition->setEnabled(false);
 
     for (int i = 0; i < this->servoBundles.size(); ++i)
     {
@@ -99,8 +101,14 @@ void servoboard_main::enableButtons()
     this->ui->chkUseAdvanced->setEnabled(true);
     this->ui->btnPause->setEnabled(true);
     this->ui->btnStopSequence->setEnabled(true);
+    this->ui->btnHotModeStartStop->setEnabled(true);
+    this->ui->btnSetStartPosition->setEnabled(true);
 
 }
+/*!
+ * \brief This displays a message box to the user that they are not connected
+ *      to a serial port
+ */
 void servoboard_main::displayConnectionWarning()
 {
     QMessageBox warn(this);
@@ -108,7 +116,15 @@ void servoboard_main::displayConnectionWarning()
     warn.setIcon(QMessageBox::Critical);
     warn.exec();
 }
-
+/*!
+ * \brief Displays a warning when saving a file in the older file format.
+ *
+ * This method does not check to see if there is any information that cannont
+ * be saved.
+ *
+ * \return True if the user wishes to continue with the save operation, false
+ *      false otherwise.
+ */
 bool servoboard_main::displaySaveFormatWaring()
 {
     //Warns that features can't be saved in the current format.
@@ -136,6 +152,19 @@ bool servoboard_main::displaySaveFormatWaring()
     return false;//Should never get here, this is to stop the warnings.
 
 }
+/*!
+ * \brief Asks the user if they wish to keep changes they have made to the text
+ *      edit by hand or if they were accidental.
+ *
+ * This is used to confirm if the user made changes to the sequence text edit
+ * that they wish to keep. This doesn't check if the user changes are valid.
+ * They are able to choose to keep or discard the changes or cancel the
+ * operation if they wish to make further changes to the sequence box.
+ *
+ * \return QMessageBox::Yes if they wish to keep the changes,
+ *      QMessageBox::No if they don't want the changes and QMessageBox::Cancel
+ *      if they wish to cancel the operation that brought up the dialog.
+ */
 QMessageBox::StandardButton servoboard_main::displayKeepChangesWarning()
 {
     //Ask if user changes are still wanted.
@@ -164,7 +193,16 @@ QMessageBox::StandardButton servoboard_main::displayKeepChangesWarning()
     }
     return QMessageBox::Cancel;//Should never get here, this is to stop the warnings.
 }
-
+/*!
+ * \brief Warns the users that the edits the user made are invalid and cannot
+ *      be kept.
+ *
+ * If the user has made changes that cannot be kept, they can either continue
+ * with the operation and loose the changes or they can cancel the operation
+ * and keep the changes.
+ *
+ * \return True if they wish to loose the edits and continue, false otherwise.
+ */
 bool servoboard_main::displayInvalidEditsWarning()
 {
     //Edits can't be kept, ask what they want to do.
@@ -190,6 +228,10 @@ bool servoboard_main::displayInvalidEditsWarning()
     }
     return false;//Should never get here, this is to stop the warnings.
 }
+/*!
+ * \brief Notify the user that the new starting position was burnt into the
+ *       mirco.
+ */
 void servoboard_main::displayBurnSuccess()
 {
     QMessageBox warn(this);
@@ -201,6 +243,18 @@ void servoboard_main::displayBurnSuccess()
     warn.setWindowTitle("Set Start Position");
     warn.exec();//Not show, this is a synchonous call.
 }
+/*!
+ * \brief Notify the user that a starting position was found in the file
+ *      and ask if they wish to burn it to the micro.
+ *
+ * When a file is loaded it can have the starting position burnt into the
+ * microcontroller, but since EEPROM can only be written to a certain number
+ * of times before it stops working, the user may not want to burn the starting
+ * position in everytime.
+ *
+ * \return True if the user wishes to have the starting position burnt into the
+ *      mircocontroller.
+ */
 bool servoboard_main::displayBurnQuery()
 {
     //Start position found in file, ask to burn to chip
@@ -227,7 +281,10 @@ bool servoboard_main::displayBurnQuery()
     return false;//Should never get here, this is to stop the warnings.
 
 }
-
+/*!
+ * \brief Informs the user that a start position could not be burnt into the
+ *      mirco.
+ */
 void servoboard_main::displaySetStartFailure()
 {
     QMessageBox warn(this);
@@ -239,13 +296,33 @@ void servoboard_main::displaySetStartFailure()
     warn.setWindowTitle("Set Start Position");
     warn.exec();//Not show, this is a synchonous call.
 }
-
+/*!
+ * \brief Places the text in the text edit. Records that thte text had not
+ *      been changed.
+ *
+ * This class has to track if the text in the text edit has been changed by the
+ * user from when the controller last updated the text in the box.
+ *
+ * \param sequnce
+ *      This is the text that will be displayed in the sequence box.
+ */
 void servoboard_main::displayNewSequence(QString sequence)
 {
     //Display the new sequecne, store that text has not been edited yet.
     this->ui->txtSequence->setPlainText(sequence);
     this->hasTextChanged = false;
 }
+/*!
+ * \brief Quickly checks to see if there is enough text in the text edit for
+ *      there to be a sequence in the box.
+ *
+ * Sometimes the user wishes to clear the sequence in the box, or there is no
+ * information in the text edit. This method is used to check quickly if it is
+ * worth parsing the contents of the box looking for a sequence.
+ *
+ * \return True if there are enough characters in the text edit to be a
+ *      sequence, false otherwise.
+ */
 bool servoboard_main::hasSequenceInText()
 {
     //This doens't actually parse anything, just if there are enough characters it
@@ -261,12 +338,26 @@ bool servoboard_main::hasSequenceInText()
         return false;
     }
 }
+/*!
+ * \brief Returns the information in the text edit as a string
+ *
+ * The information in the text edit box is returned as a string, with all of
+ * style information removed from it.
+ *
+ * \return The information in the text edit, with all of the style information
+ *      stripped.
+ */
 QString servoboard_main::currentSequenceText()
 {
     return this->ui->txtSequence->toPlainText(); //Plain text strips the unneeded style info
 }
 
-
+/*!
+ * \brief Selects all of the servo bundle check boxes
+ *
+ * This is triggered when the select all button on the user interface is clicked and
+ * checks all of the servo bundles to be stored or played.
+ */
 void servoboard_main::on_btnSelectAll_clicked()
 {
     // Select all the servo checkboxes
@@ -276,7 +367,12 @@ void servoboard_main::on_btnSelectAll_clicked()
     }
 }
 
-
+/*!
+ * \brief Cleats all of the servo bundle check boxes
+ *
+ * This is triggered when the clear all button is clicked and clears all of the check
+ * boxes on the interface.
+ */
 void servoboard_main::on_btnClearAll_clicked()
 {
     //Clear all the servo checkboxes
@@ -285,14 +381,30 @@ void servoboard_main::on_btnClearAll_clicked()
         this->servoBundles.at(i)->setUnchecked();
     }
 }
-
+/*!
+ * \brief Checks if the sequence text box has been edited by the user since the
+ *      last time that the controller updated the text in the box.
+ *
+ * \return True if the text has been changed, false otherwise.
+ */
 bool servoboard_main::hasSequenceChanged()
 {
     //return if the user has typed something into the text box
     return this->hasTextChanged;
 }
 
-
+/*!
+ * \brief Highlights the next line in the sequence when it is being played back.
+ *
+ * When a sequence is being played the line that was last sent to the servo
+ * control board is highlighted. The syntax highlighting switches to only
+ * showing the comments as another colour, while this method highlights the
+ * currently playing line as red, with the lines that have already played as
+ * blue. It advances over the comment lines without having to count then as a
+ * line to be played.
+ *
+ * \return True if the next line was successfully highlighted. False otherwise.
+ */
 bool servoboard_main::highlightNextLine()
 {
     //This highlights the previous lines blue, the active line red and the rest are black.
@@ -311,7 +423,7 @@ bool servoboard_main::highlightNextLine()
     this->ui->txtSequence->clear();
     this->ui->txtSequence->setTextColor(QColor(Qt::blue));
     int lineCount(0);
-    //Move thought the lines that have already been highlighted.
+    //Move through the lines that have already been highlighted.
     while (lineCount < this->lastLineHighlighed)
     {
         this->ui->txtSequence->insertPlainText(lines.at(lineCount++) + "\n");
@@ -334,7 +446,14 @@ bool servoboard_main::highlightNextLine()
     this->lastLineHighlighed++;
     return true;
 }
-
+/*!
+ * \brief Cleans up after a sequence has been played and restores the text edit
+ *      to the normal state.
+ *
+ * When a sequence has been played back all of the member variables have to reset,
+ * the style information has to be stripped from the text that was being diplayed
+ * and the complete syntax highlighting must be restored.
+ */
 void servoboard_main::resetHighlighting()
 {
     //Reset the internal iterator and go back to normal syntax highlighting.
