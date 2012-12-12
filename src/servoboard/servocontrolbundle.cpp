@@ -1,4 +1,5 @@
 #include "servocontrolbundle.h"
+#include <QDebug>
 
 /*!
  * \brief Creates the bundle, intializes the UI elements.
@@ -101,6 +102,14 @@ void ServoControlBundle::setChecked()
 {
     this->ui.chk_enable->setChecked(true);
 }
+/*!
+ * \brief Takes the position that was last sent to the board and loads it into the text box.
+ */
+void ServoControlBundle::currentToNext()
+{
+    this->ui.verticalSlider->setValue(this->ui.lbl_position->text().toInt());
+}
+
 /*!
  * \brief Sets a bundle as unselected for use in a position.
  */

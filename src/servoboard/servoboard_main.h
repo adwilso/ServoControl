@@ -102,6 +102,8 @@ private slots:
 
     void on_btnHotModeStartStop_clicked();
 
+    void on_btnLoadCurrent_clicked();
+
 private:
     void initBundles(); //!< Makes connections and store servobundles.
 

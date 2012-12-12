@@ -728,3 +728,14 @@ void servoboard_main::on_btnHotModeStartStop_clicked()
     }
 
 }
+/*!
+ * \brief Load the last position sent to the servo control board.
+ */
+
+void servoboard_main::on_btnLoadCurrent_clicked()
+{
+    for (int i(0); i < 12; i++)
+    {
+        this->servoBundles.at(i)->currentToNext();
+    }
+}
