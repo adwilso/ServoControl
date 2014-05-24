@@ -1,8 +1,8 @@
 #include "servoboardcontroller.h"
 
 
-/*
-  Why is the file name not part of the controller and how can this
+/*!
+ \todo Why is the file name not part of the controller and how can this
         be fixed?
  */
 QString ServoboardController::fileName = "";

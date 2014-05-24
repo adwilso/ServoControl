@@ -31,7 +31,7 @@ void Position::init()
 
 /*Public Methods*/
 
-/*  Do we want to reinitalize to default state on an invalid input,
+/*! \todo Do we want to reinitalize to default state on an invalid input,
 	or leave in an undetermined state? */
 
 /*! \brief Reads and stores the data from a string into the object.
