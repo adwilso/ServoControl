@@ -1,8 +1,15 @@
 #ifndef SERVOBOARDCONTROLLER_H
 #define SERVOBOARDCONTROLLER_H
+#include <qglobal.h>
+
+
 
 #include <QObject>
-#include <QtWidgets\QFileDialog>
+#if QT_VERSION >= 0x050000
+ #include <QtWidgets\QFileDialog>
+#else
+ #include <QtGui/QFileDialog>
+#endif
 #include <QTimer>
 
 #include <abstractserial.h>

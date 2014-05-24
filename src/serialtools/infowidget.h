@@ -1,7 +1,13 @@
 #ifndef INFOWIDGET_H
 #define INFOWIDGET_H
 
+#include <qglobal.h>
+
+#if QT_VERSION >= 0x050000
 #include <QWidget>
+#else
+#include <QtGui/QWidget>
+#endif
 
 namespace Ui {
     class InfoWidget;

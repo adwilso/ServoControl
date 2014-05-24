@@ -1,7 +1,13 @@
 #ifndef TRACEWIDGET_H
 #define TRACEWIDGET_H
+#include <qglobal.h>
 
-#include <QtWidgets\QWidget>
+
+#if QT_VERSION >= 0x050000
+ #include <QtWidgets\QWidget>
+#else
+ #include <QWidget>
+#endif
 
 namespace Ui {
     class TraceWidget;

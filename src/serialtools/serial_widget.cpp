@@ -1,6 +1,16 @@
+#include <qglobal.h>
+
+
+#if QT_VERSION >= 0x050000
+ #include <QtWidgets\QMessageBox>
+#else
+ #include <QMessageBox>
+#endif
+
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
-#include <QtWidgets\QMessageBox>
+
+
 
 #include "serial_widget.h"
 #include "ui_serial_widget.h"
@@ -388,6 +398,14 @@ void SerialWidget::updateInfoData(SerialDeviceEnumerator* enumerator, QString& n
 
         this->infoWidget->updateInfo(data);
     }
+}
+
+void SerialWidget::connectionFailedWarning()
+{
+    QMessageBox warn(this);
+    warn.setText(tr("Connection failed, check to make sure the port is not being used elsewhere"));
+    warn.setIcon(QMessageBox::Warning);
+    warn.exec();
 }
 /*
 

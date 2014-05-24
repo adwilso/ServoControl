@@ -1,8 +1,14 @@
 #ifndef LOGVIEWERDIALOG_H
 #define LOGVIEWERDIALOG_H
  
-#include <QtWidgets\QDialog>
+#include <qglobal.h>
 
+
+#if QT_VERSION >= 0x050000
+#include <QtWidgets\QDialog>
+#else
+#include <QDialog>
+#endif
 QT_BEGIN_NAMESPACE
 class QTextBrowser;
 class QPlainTextEdit;

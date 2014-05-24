@@ -1,13 +1,22 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <qglobal.h>
+
+#if QT_VERSION >= 0x050000
 #include <QtWidgets\QMainWindow>
-#include <QPointer>
 #include <QtWidgets\QMenu>
 #include <QtWidgets\QMenuBar>
 #include <QtWidgets\QAction>
-#include <abstractserial.h>
+#else
+#include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
+#endif
 
+#include <abstractserial.h>
+#include <QPointer>
 
 #include "serialtools/connectioncontroller.h"
 #include "servoboard/servoboardcontroller.h"

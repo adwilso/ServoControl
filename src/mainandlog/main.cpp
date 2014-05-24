@@ -4,7 +4,7 @@
     The main function instantiates the Main Window object,
     to which all the various 'wigets' are attached. (ie: the serial_widget)
 */
-
+#include <qglobal.h>
 
 #ifndef __PRETTY_FUNCTION__
  #ifndef __FUNCDNAME__
@@ -21,7 +21,12 @@
  */
 bool VERBOSE = true;
 
-#include <QtWidgets\QApplication>
+#if QT_VERSION >= 0x050000
+ #include <QtWidgets\QApplication>
+#else
+ #include <QtGui/QApplication>
+#endif
+
 #include <QString>
 #include <QtDebug>
 #include <QPointer>
@@ -40,11 +45,22 @@ QPointer<LogViewer> logViewer;
 /*!
   Custom message handler that redirects messages to a log viewer (if available).
 */
+#if QT_VERSION >= 0x050000
 void MyMessageOutput(QtMsgType Type, const QMessageLogContext& Context, const QString &Message)
 {
     if(logViewer)
        logViewer->outputMessage( Type, Message );
 }
+#else
+void myMessageOutput(QtMsgType type, const char *msg)
+{
+    if(logViewer)
+    {
+        logViewer->outputMessage( type, msg );
+    }
+}
+#endif
+
 
 int main(int argc, char *argv[])
 {
@@ -59,8 +75,12 @@ int main(int argc, char *argv[])
 
     // Instantiate a log viewer and redirect debug messages to it.
     logViewer = new LogViewer;
-    qInstallMessageHandler(MyMessageOutput);
 
+#if QT_VERSION >= 0x050000
+    qInstallMessageHandler(MyMessageOutput);
+#else
+    qInstallMsgHandler(myMessageOutput);
+#endif
     // Instantiate the Main Window
     MainWindow w(0, logViewer);
     w.setAttribute(Qt::WA_AlwaysShowToolTips);

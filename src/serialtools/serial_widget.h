@@ -1,8 +1,16 @@
 #ifndef SERIALWIDGET_H
 #define SERIALWIDGET_H
+#include <qglobal.h>
 
-#include <QtWidgets\QWidget>
-#include <QtCore\QDateTime>
+
+#if QT_VERSION >= 0x050000
+ #include <QtWidgets\QWidget>
+ #include <QtCore\QDateTime>
+#else
+ #include <QtGui/QWidget>
+ #include <QtCore/QDateTime>
+#endif
+
 
 
 QT_BEGIN_NAMESPACE
@@ -38,7 +46,7 @@ public:
                                           QStringList& parity, QStringList& stopBits,
                                            QStringList& flow);
     void updateInfoData(SerialDeviceEnumerator* enumerator,QString& name);
-
+    void connectionFailedWarning();
 
     void initSerialWidgetCloseState();
     void initSerialWidgetOpenState();

@@ -1,7 +1,13 @@
 #ifndef ADVANCEDLINEOPTIONSDIALOG_H
 #define ADVANCEDLINEOPTIONSDIALOG_H
+#include <qglobal.h>
 
+
+#if QT_VERSION >= 0x050000
 #include <QtWidgets\QDialog>
+#else
+ #include <QDialog>
+#endif
 #include <QDebug>
 
 namespace Ui {

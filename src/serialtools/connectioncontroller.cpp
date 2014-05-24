@@ -120,6 +120,8 @@ void ConnectionController::open(QString port)
     if (!this->port->open(QIODevice::ReadWrite))
     {
         qDebug() << "Port failed to open in connectControl";
+        view->connectionFailedWarning();
+        return;
     }
 
     this->port->setBaudRate("9600 baud");

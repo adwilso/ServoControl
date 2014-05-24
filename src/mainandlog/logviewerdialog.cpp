@@ -1,13 +1,24 @@
 #include "logviewerdialog.h"
- 
+#include <qglobal.h>
+
+#if QT_VERSION >= 0x050000
 #include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QHBoxLayout>
 #include <QtWidgets\QPlainTextEdit>
 #include <QtWidgets\QPushButton>
 #include <QtWidgets\QFileDialog>
+#include <QtWidgets\QMessageBox>
+#else
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPlainTextEdit>
+#include <QPushButton>
+#include <QFileDialog>
+#include <QMessageBox>
+#endif
+
 #include <QDir>
 #include <QFile>
-#include <QtWidgets\QMessageBox>
 #include <QTextStream>
 #include <QCloseEvent>
 #include <QKeyEvent>

@@ -1,4 +1,11 @@
+#include <qglobal.h>
+
+
+#if QT_VERSION >= 0x050000
 #include <QtWidgets\QScrollBar>
+#else
+#include <QScrollBar>
+#endif
 
 #include "tracewidget.h"
 #include "ui_tracewidget.h"
